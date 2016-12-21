@@ -26,7 +26,7 @@ class ApiController {
      */
     public function signup($request) {
         $payload = $request->getParsedBody();
-        $expectedFields = ["email", "password", "firstname", "lastname"];
+        $expectedFields = ["user_email", "password", "first_name", "last_name"];
         $result = Validations::validateMandatoryFields($expectedFields, $payload);
         if (!$result['status']) {
             return json_encode($result['body'], JSON_NUMERIC_CHECK);
@@ -47,7 +47,6 @@ class ApiController {
         if (!$result['status']) {
             return json_encode($result['body'], JSON_NUMERIC_CHECK);
         }
-        echo 'hi';exit;
         return LoginManager::loginAction($payload);
     }
 

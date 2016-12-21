@@ -1,9 +1,8 @@
 <?php
-
 /**
- * @author     Nikhil N R, <nikhil@salesx.io>
- * @date       April 24, 2016
- * @brief      User Model
+ * @author     Ajith E R, <ajith@salesx.io>
+ * @date       December 19, 2016
+ * @brief      Sign up API
  */
 
 namespace models;
@@ -14,13 +13,13 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 class User extends Eloquent {
 
     public $timestamps = false;
-    protected $table = 'User';
+    protected $table = 'user';
     protected $fillable = [
-        'user_name',
-        'role_id',
+        'username',
+        'email',
         'password',
-        'is_active',
-        'updated_date'
+        'first_name',
+        'last_name'
     ];
 
     public function __construct() {
@@ -28,11 +27,9 @@ class User extends Eloquent {
     }
 
     /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       April 26, 2016
-     * @brief      Add a new user.
-     * @param      $data  Data array.
-     * @return     Insert operation output
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 19, 2016
+     * @brief      Sign up API
      */
     public function addUser($data) {
         return $this->tableObject->insertGetId($data);
