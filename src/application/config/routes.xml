@@ -1,0 +1,12 @@
+<routes>
+    <post>
+        <signup></signup>
+        <login></login>
+        <refreshsessiontoken>
+            <role>1</role>
+            <role>2</role>
+        </refreshsessiontoken>
+    </post>
+    <get>
+    </get>
+</routes>
