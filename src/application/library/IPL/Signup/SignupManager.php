@@ -118,7 +118,15 @@ class SignupManager {
             $rand = mt_rand(0, $max);
             $str .= $characters[$rand];
         }
-        return $str;
+        $user_refferal = new User_Refferal();
+        $refferal_code = 'IPL'.strtoupper($str);
+        $refferal = $user_refferal->checkRefferalCode($refferal_code);
+        if($refferal == null){
+            return $str;
+        }
+        else{
+        self::generateRefferalCode(4);
+        }
     }
 
     /**
