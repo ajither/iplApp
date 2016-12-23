@@ -146,4 +146,23 @@ class SignupManager {
         $user_refferal->updateUserRefferal($refferalCode);
     }
 
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      Send Reset Code.
+     */
+    public static function resetUserPassword($payload)
+    {
+        $user = new User();
+        $userDetails = $user->fetchDetailsByEmail($payload['user_email']);
+        if($userDetails != null){
+
+        }else{
+            $response['success'] = "false";
+            $response['message'] = "Email id not Found.";
+            return json_encode($response, JSON_NUMERIC_CHECK);
+        }
+
+    }
+
 }

@@ -2,10 +2,8 @@
     <post>
         <signup></signup>
         <login></login>
-        <refreshsessiontoken>
-            <role>1</role>
-            <role>2</role>
-        </refreshsessiontoken>
+        <refreshsessiontoken></refreshsessiontoken>
+        <resetpassword></resetpassword>
     </post>
     <get>
     </get>

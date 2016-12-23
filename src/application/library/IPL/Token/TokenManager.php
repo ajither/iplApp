@@ -116,7 +116,6 @@ class TokenManager {
                 }
             } while ($repeat == true);
         }
-
         $encryptionKey = rand(2, 9);
         $sessionToken = $encryptionKeyMap{$encryptionKey};
         $userIdPasswordHash = HashManager::passwordHash("^#" . $username . "-" . $password . "#^");

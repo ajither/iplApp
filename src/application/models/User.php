@@ -38,14 +38,10 @@ class User extends Eloquent {
     /**
      * @author     Nikhil N R, <nikhil@salesx.io>
      * @date       April 26, 2016
-     * @brief      Fetches user details.
-     * @param      $userName  User name.
-     * @return     User details
      */
-    public function fetchDetailsByUsername($userName) {
+    public function fetchDetailsByEmail($email) {
         $result = $this->tableObject->
-                        where('user_name', $userName)->
-                        where('is_active', '1')->get();
+                        where('email', $email)->get();
         if (isset($result[0])) {
             return $result[0];
         } else {
@@ -75,18 +71,13 @@ class User extends Eloquent {
     public function deleteUser($user_id) {
         return $this->tableObject->delete($user_id);
     }
-
     /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       April 26, 2016
-     * @brief      Fetches user details.
-     * @param      $id  User Id.
-     * @return     User details
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       October 31, 2016
      */
     public function fetchUserDetails($id) {
         $result = $this->tableObject->
-                        where('id', $id)->
-                        where('is_active', '1')->get();
+                        where('id', $id)->get();
         if (isset($result[0])) {
             return $result[0];
         } else {
@@ -95,11 +86,8 @@ class User extends Eloquent {
     }
 
     /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       August 29, 2016
-     * @brief      Update user details.
-     * @param      $id  User Id.
-     * @return     Update operation output
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       October 31, 2016
      */
     public function updateUser($data) {
         return $this->tableObject->
@@ -107,34 +95,21 @@ class User extends Eloquent {
                         update($data);
     }
 
+
     /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       April 26, 2016
-     * @brief      Fetches user role.
-     * @param      $id  User Id.
-     * @return     User details
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       October 31, 2016
+     * @brief      Fetch USer Details
      */
-    public function fetchUserRole($userId) {
+    public function fetchDetailsByUsername($userName)
+    {
         $result = $this->tableObject->
-                        where('id', $userId)->
-                        where('is_active', '1')->get(array('role_id'));
+        where('email', $userName)->orWhere('username', $userName)->get();
         if (isset($result[0])) {
             return $result[0];
         } else {
             return null;
         }
-    }
-    
-    /**
-     * @author     Ajith E R, <ajith@salesx.io>
-     * @date       October 31, 2016
-     * @brief      Soft Delete user
-     * @param      $id 
-     * @return     
-     */
-    public function deleteUserSoft($Id) {
-        return $this->tableObject->
-                        where('id', $Id)->update(array('is_active' => '0'));
     }
 
 }

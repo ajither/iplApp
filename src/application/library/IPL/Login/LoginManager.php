@@ -24,6 +24,13 @@ class LoginManager {
             $encryptionKeyMapModel = new Encryption_Keymap();
             $encryptionKeyMap = $encryptionKeyMapModel->fetchEncryptionKeymapWithUid($_SESSION["user_id"]);
             $sessionToken = TokenManager::generateSessionToken($payload['user_name'], $payload['user_password'], $encryptionKeyMap);
+            $response['success'] = "true";
+            $response['sessionToken'] = $sessionToken;
+            return json_encode($response, JSON_NUMERIC_CHECK);
+        }else {
+            $response['success'] = "false";
+            $response['message'] = "Incorrect credentials";
+            return json_encode($response, JSON_NUMERIC_CHECK);
         }
     }
 
@@ -36,9 +43,8 @@ class LoginManager {
         $user = new User();
         $userDetails = $user->fetchDetailsByUsername($userName);
         if ($userDetails !== null && HashManager::passwordCheck($password, $userDetails->password)) {
-            $_SESSION["user_id"] = $userDetails->id;
+            $_SESSION["user_id"] = $userDetails->user_id;
             $_SESSION["user_user_name"] = $userDetails->user_name;
-            $_SESSION["user_role_id"] = $userDetails->role_id;
             return true;
         } else {
             return false;

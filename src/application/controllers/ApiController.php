@@ -52,6 +52,22 @@ class ApiController {
 
     /**
      * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      Reset User Password.
+     */
+    public function resetPassword($request) {
+        $payload = $request->getParsedBody();
+        $expectedFields = ["user_email"];
+        $result = Validations::validateMandatoryFields($expectedFields, $payload);
+        if (!$result['status']) {
+            return json_encode($result['body'], JSON_NUMERIC_CHECK);
+        }
+
+        return SignupManager::resetUserPassword($payload);
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016
      * @brief      Error code
      */

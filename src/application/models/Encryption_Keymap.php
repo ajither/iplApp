@@ -54,11 +54,9 @@ class Encryption_Keymap extends Eloquent {
     }
 
     /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       July 7, 2016
-     * @brief      fetch Encryption key.
-     * @param      $userId  User id
-     * @return     Encryption key.
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      Login Actions
      */
     public function fetchEncryptionKeymapWithUid($userId) {
         $result = $this->tableObject->
