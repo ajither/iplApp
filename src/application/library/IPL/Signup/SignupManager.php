@@ -28,7 +28,7 @@ class SignupManager {
         $data['last_name'] = $payload['last_name'];
         $data['password'] = HashManager::passwordHash($payload['password']);
         $date['created_date'] = date("Y-m-d H:i:s");
-        if(isset($payload['refferal_code']) && ($payload['refferal_code'] != '') ){
+        if((isset($payload['refferal_code'])) && ($payload['refferal_code'] != '')){
             $user_refferal = new User_Refferal();
             $refferalData = $user_refferal->checkRefferalCode($payload['refferal_code']);
             if($refferalData == null){
