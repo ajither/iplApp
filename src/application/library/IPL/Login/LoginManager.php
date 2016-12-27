@@ -24,8 +24,11 @@ class LoginManager {
             $encryptionKeyMapModel = new Encryption_Keymap();
             $encryptionKeyMap = $encryptionKeyMapModel->fetchEncryptionKeymapWithUid($_SESSION["user_id"]);
             $sessionToken = TokenManager::generateSessionToken($payload['user_name'], $payload['user_password'], $encryptionKeyMap);
+            $user = new User();
+            $userDetails = $user->fetchAllDetailsByUsername($payload['user_name']);
             $response['success'] = "true";
             $response['sessionToken'] = $sessionToken;
+            $response['user_details'] = $userDetails;
             return json_encode($response, JSON_NUMERIC_CHECK);
         }else {
             $response['success'] = "false";

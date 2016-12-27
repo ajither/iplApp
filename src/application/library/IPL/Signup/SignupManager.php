@@ -156,7 +156,13 @@ class SignupManager {
         $user = new User();
         $userDetails = $user->fetchDetailsByEmail($payload['user_email']);
         if($userDetails != null){
-
+            $data['email'] = $payload['user_email'];
+            $data['password'] = HashManager::passwordHash($payload['user_password']);
+            $user = new User();
+            $user->editUser($data);
+            $response['success'] = "true";
+            $response['message'] = "Password Rest Successfully";
+            return json_encode($response, JSON_NUMERIC_CHECK);
         }else{
             $response['success'] = "false";
             $response['message'] = "Email id not Found.";

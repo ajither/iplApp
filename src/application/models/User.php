@@ -112,4 +112,28 @@ class User extends Eloquent {
         }
     }
 
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       October 31, 2016
+     * @brief      Fetch USer Details
+     */
+    public function editUser($data)
+    {
+        return $this->tableObject->where('email', $data['email'])->
+        update($data);
+    }
+
+    public function fetchAllDetailsByUsername($userName)
+    {
+        $result = $this->tableObject->
+        where('email', $userName)->orWhere('username', $userName)->
+        join("user_profile","user.user_id","=","user_profile.user_id")->
+        get(array("user.user_id","user.email","user.first_name","user.last_name","user.username","user_profile.phone_number","user_profile.profile_picture","user_profile.refferal_code"));
+        if (isset($result[0])) {
+            return $result[0];
+        } else {
+            return null;
+        }
+    }
+
 }

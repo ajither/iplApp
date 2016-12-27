@@ -25,7 +25,7 @@ class TokenManager {
     public static function validateTokens($request) {
         if ($request->getAttribute('apiname') == 'login' ||
                 $request->getAttribute('apiname') == 'signup' ||
-                $request->getAttribute('apiname') == 'organizationcheck' ||
+                $request->getAttribute('apiname') == 'resetpassword' ||
                 $request->getAttribute('apiname') == 'refreshsessiontoken') {
             if (!array_key_exists('HTTP_SALESX_API_KEY', $request->getHeaders())) {
                 return false;
