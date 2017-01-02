@@ -128,7 +128,8 @@ class User extends Eloquent {
         $result = $this->tableObject->
         where('email', $userName)->orWhere('username', $userName)->
         join("user_profile","user.user_id","=","user_profile.user_id")->
-        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber"));
+            join("user_refferal","user.user_id","=","user_refferal.user_id")->
+        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber", "user_refferal.refferal_point as refferalpoint","user_refferal.refferal_user_count as refferalusercount"));
         if (isset($result[0])) {
             return $result[0];
         } else {
