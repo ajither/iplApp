@@ -16,6 +16,7 @@ use \library\IPL\Email\SendGoogleEmail as SendGoogleEmail;
 use \library\IPL\Common\Logger as Logger;
 use \library\IPL\Common\Validations as Validations;
 use \models\Google_Access_Tokens as Google_Access_Tokens;
+use \library\IPL\User\UserManager as UserManager;
 
 class ApiController {
 
@@ -66,6 +67,14 @@ class ApiController {
         return SignupManager::resetUserPassword($payload);
     }
 
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      Reset User Password.
+     */
+    public function userDetails($request) {
+        return UserManager::fetchUserDetails();
+    }
     /**
      * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016

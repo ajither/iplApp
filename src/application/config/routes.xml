@@ -2,6 +2,7 @@
     <post>
         <signup></signup>
         <login></login>
+        <userdetails></userdetails>
         <refreshsessiontoken></refreshsessiontoken>
         <resetpassword></resetpassword>
     </post>

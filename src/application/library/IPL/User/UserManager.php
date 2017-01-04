@@ -51,6 +51,15 @@ class UserManager {
     }
 
 
+    public static function fetchUserDetails() {
+        $user_id= $_SESSION['user_id'];
+        $user = new User();
+        $userDetails = $user->fetchAllDetailsByUserId($user_id);
+        $response['success'] = "true";
+        $response['user_details'] = $userDetails;
+        return json_encode($response, JSON_NUMERIC_CHECK);
+    }
+
     /**
      * @author     Nikhil N R, <nikhil@salesx.io>
      * @date       October 19, 2016
