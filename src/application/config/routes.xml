@@ -3,6 +3,7 @@
         <signup></signup>
         <login></login>
         <userdetails></userdetails>
+        <matchupdate></matchupdate>
         <refreshsessiontoken></refreshsessiontoken>
         <resetpassword></resetpassword>
     </post>
