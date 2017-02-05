@@ -29,4 +29,11 @@ class Match_Update extends Eloquent
         return $this->tableObject
             ->where('active','yes')->get();
     }
+
+    public function matchStartTime($matchNo)
+    {
+        $result =  $this->tableObject
+            ->where('matchno',$matchNo)->get();
+        return json_decode(json_encode($result[0]),TRUE);
+    }
 }

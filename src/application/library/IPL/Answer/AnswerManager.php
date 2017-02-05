@@ -8,6 +8,7 @@
 namespace library\IPL\Answer;
 
 use models\Answer;
+use models\Match_Update;
 
 class AnswerManager {
 
@@ -16,6 +17,17 @@ class AnswerManager {
         $data['user_id'] = $_SESSION['user_id'];
         $data['answer'] = strtolower($payload['answer']);
         $data['matchno'] = $payload['matchNo'];
+
+        $time = date("Y-m-d H:i:s");
+        $matchUpdateModel = new Match_Update();
+        $matchDetails = $matchUpdateModel->matchStartTime($payload['matchNo']);
+        $timeUp = date("Y-m-d H:i:s", strtotime("-30 minutes", strtotime($matchDetails['startTime'])));
+        if($time >= $timeUp){
+            $response['success'] = "false";
+            $response['message'] = "Time Up Wait For Next Match!";
+            return json_encode($response, JSON_NUMERIC_CHECK);
+        }
+
         $answerModel = new Answer();
         $answerModel->setCurrentMatchAnswer($data);
         $response['success'] = "true";
