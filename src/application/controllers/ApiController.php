@@ -18,6 +18,7 @@ use \library\IPL\Common\Validations as Validations;
 use \models\Google_Access_Tokens as Google_Access_Tokens;
 use \library\IPL\User\UserManager as UserManager;
 use \library\IPL\Match\MatchManager as MatchManager;
+use \library\IPL\Answer\AnswerManager as AnswerManager;
 
 class ApiController {
 
@@ -84,6 +85,22 @@ class ApiController {
      */
     public function matchUpdate($request) {
         return MatchManager::getMatchDetails();
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      Submit Answer.
+     */
+    public function matchAnswer($request) {
+        $payload = $request->getParsedBody();
+        $expectedFields = ["answer","matchNo"];
+        $result = Validations::validateMandatoryFields($expectedFields, $payload);
+        if (!$result['status']) {
+            return json_encode($result['body'], JSON_NUMERIC_CHECK);
+        }
+
+        return AnswerManager::updateMatchAnswer($payload);
     }
 
     /**

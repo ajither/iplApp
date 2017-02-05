@@ -7,6 +7,20 @@
  */
 namespace library\IPL\Answer;
 
-class HashManager {
+use models\Answer;
 
+class AnswerManager {
+
+    public static function updateMatchAnswer($payload)
+    {
+        $data['user_id'] = $_SESSION['user_id'];
+        $data['answer'] = strtolower($payload['answer']);
+        $data['match'] = $payload['matchNo'];
+        $answerModel = new Answer();
+        $answerModel->setCurrentMatchAnswer($data);
+        $response['success'] = "true";
+        $response['message'] = "Answer Successfully Submitted";
+        return json_encode($response, JSON_NUMERIC_CHECK);
+
+    }
 }
