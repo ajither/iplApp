@@ -17,6 +17,7 @@ class AnswerManager {
         $data['user_id'] = $_SESSION['user_id'];
         $data['answer'] = strtolower($payload['answer']);
         $data['matchno'] = $payload['matchNo'];
+        $data['update_time'] = date("Y-m-d H:i:s");
 
         $time = date("Y-m-d H:i:s");
         $matchUpdateModel = new Match_Update();
