@@ -15,7 +15,7 @@ class AnswerManager {
     {
         $data['user_id'] = $_SESSION['user_id'];
         $data['answer'] = strtolower($payload['answer']);
-        $data['match'] = $payload['matchNo'];
+        $data['matchno'] = $payload['matchNo'];
         $answerModel = new Answer();
         $answerModel->setCurrentMatchAnswer($data);
         $response['success'] = "true";

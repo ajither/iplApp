@@ -26,7 +26,6 @@ class Answer extends Eloquent
 
     public function setCurrentMatchAnswer($data)
     {
-        return $this->tableObject
-            ->updateOrInsert(["user_id" => $data['user_id'], "match" => $data['matchNo']], $data);
+        return $this->tableObject->updateOrInsert(['matchno' => $data['matchno'],'user_id' => $data['user_id']], $data);
     }
 }
