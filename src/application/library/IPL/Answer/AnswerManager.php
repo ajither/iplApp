@@ -9,6 +9,8 @@ namespace library\IPL\Answer;
 
 use models\Answer;
 use models\Match_Update;
+use \models\Match_Point as Match_Point;
+use \models\User as User;
 
 class AnswerManager {
 
@@ -33,6 +35,29 @@ class AnswerManager {
         $answerModel->setCurrentMatchAnswer($data);
         $response['success'] = "true";
         $response['message'] = "Answer Successfully Submitted";
+        return json_encode($response, JSON_NUMERIC_CHECK);
+
+    }
+
+    public static function updateMatchScore($payload)
+    {
+        $answ = strtolower($payload['answer']);
+        $matchno = $payload['matchNo'];
+        $answerModel = new Answer();
+        $userid = $answerModel->fetchWinners($answ,$matchno);
+        foreach ($userid as $key => $value){
+            $matchPointModel = new Match_Point();
+            $point = $matchPointModel->getPoint($value->user_id);
+            $point = $point+2;
+
+            $matchPoint['user_id'] = $value->user_id;
+            $matchPoint['matchpoint'] = $point;
+            $matchPointModel = new Match_Point();
+            $matchPointModel->updateMatchpoint($matchPoint);
+        }
+
+        $response['success'] = "true";
+        $response['message'] = "winner score updated";
         return json_encode($response, JSON_NUMERIC_CHECK);
 
     }

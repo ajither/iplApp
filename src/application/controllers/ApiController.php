@@ -105,6 +105,31 @@ class ApiController {
 
     /**
      * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function topProfile($request) {
+        return UserManager::getTopProfileDetails();
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function matchWinnerUpdate($request) {
+        $payload = $request->getParsedBody();
+        $expectedFields = ["answer","matchNo"];
+        $result = Validations::validateMandatoryFields($expectedFields, $payload);
+        if (!$result['status']) {
+            return json_encode($result['body'], JSON_NUMERIC_CHECK);
+        }
+
+        return AnswerManager::updateMatchScore($payload);
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016
      * @brief      Error code
      */

@@ -12,9 +12,13 @@ namespace library\IPL\User;
 use \libphonenumber\PhoneNumberUtil as PhoneNumberUtil;
 use \library\IPL\Common\Utils as Utils;
 use \library\IPL\Email\EmailManager as EmailManager;
+use models\Answer;
 use \models\User as User;
 use \models\User_Profile as User_Profile;
 use \library\IPL\Hash\HashManager as HashManager;
+use \models\Match_Point as Match_Point;
+use models\User_Refferal;
+
 class UserManager {
 
     /**
@@ -86,5 +90,32 @@ class UserManager {
             }
         }
         return false;
+    }
+
+    public static function getTopProfileDetails()
+    {
+        $topMatchWinner = array();
+        $matchPointModel = new Match_Point();
+        $matchPoint = $matchPointModel->fetchTopProfileDetails();
+        foreach ($matchPoint as $key => $value){
+            $user = new User();
+            $userDetails = $user->fetchAllDetailsByUserId($value->user_id);
+            array_push($topMatchWinner,$userDetails);
+        }
+
+        $topRefferalWinner = array();
+        $refferalModel = new User_Refferal();
+        $refferalPoint = $refferalModel->fetchTopProfileDetails();
+        foreach ($refferalPoint as $key => $value){
+        $user = new User();
+        $userDetails = $user->fetchAllDetailsByUserId($value->user_id);
+        array_push($topRefferalWinner,$userDetails);
+        }
+
+        $response['success'] = "true";
+        $response['topWinner'] = $topMatchWinner;
+        $response['topRefferal'] = $topRefferalWinner;
+        return json_encode($response, JSON_NUMERIC_CHECK);
+
     }
 }

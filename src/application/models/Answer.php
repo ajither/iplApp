@@ -28,4 +28,11 @@ class Answer extends Eloquent
     {
         return $this->tableObject->updateOrInsert(['matchno' => $data['matchno'],'user_id' => $data['user_id']], $data);
     }
+
+    public function fetchWinners($answ, $matchno)
+    {
+        return $this->tableObject->where("answer",$answ)->where("matchno",$matchno)->get();
+    }
+
+
 }

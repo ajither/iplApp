@@ -10,9 +10,10 @@ namespace library\IPL\Signup;
 
 use \library\IPL\Hash\HashManager as HashManager;
 use \library\IPL\Login\LoginManager as LoginManager;
+use \models\Match_Point;
 use \models\User as User;
 use \models\User_Profile as User_Profile;
-use models\User_Refferal;
+use \models\User_Refferal;
 
 class SignupManager {
 
@@ -76,6 +77,11 @@ class SignupManager {
         $refferal['refferal_users_count'] = 0;
         $user_refferal = new User_Refferal();
         $user_refferal->addUserRefferal($refferal);
+
+        $matchPoint['user_id'] = $user_id;
+        $matchPoint['matchpoint'] = 0;
+        $matchPointModel = new Match_Point();
+        $matchPointModel->insertMatchpoint($matchPoint);
 
         $response['success'] = "true";
         $response['message'] = "Account Successfully Created";
@@ -161,7 +167,7 @@ class SignupManager {
             $user = new User();
             $user->editUser($data);
             $response['success'] = "true";
-            $response['message'] = "Password Rest Successfully";
+            $response['message'] = "Password Reset Successfully";
             return json_encode($response, JSON_NUMERIC_CHECK);
         }else{
             $response['success'] = "false";

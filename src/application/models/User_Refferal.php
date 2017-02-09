@@ -63,4 +63,9 @@ class User_Refferal extends Eloquent
         }
     }
 
+    public function fetchTopProfileDetails()
+    {
+        return $this->tableObject->orderBy('refferal_point','desc')->take(5)->get();
+    }
+
 }
