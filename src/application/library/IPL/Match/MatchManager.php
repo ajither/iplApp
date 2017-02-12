@@ -21,6 +21,6 @@ class MatchManager
         $data = $match->getCurrentMatch($date);
         $response['success'] = 'true';
         $response['matchdetails'] = $data;
-        return json_encode($response, JSON_NUMERIC_CHECK,JSON_UNESCAPED_SLASHES);
+        return json_encode($response,JSON_UNESCAPED_SLASHES);
     }
 }
