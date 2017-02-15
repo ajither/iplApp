@@ -9,6 +9,7 @@
         <matchanswer></matchanswer>
         <topprofile></topprofile>
         <matchwinnerupdate></matchwinnerupdate>
+        <matchschedule></matchschedule>
     </post>
     <get>
     </get>

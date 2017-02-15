@@ -117,6 +117,15 @@ class ApiController {
      * @date       December 22, 2016
      * @brief      getTopProfileDetails.
      */
+    public function matchSchedule($request) {
+        return MatchManager::getMatchSchedule();
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
     public function matchWinnerUpdate($request) {
         $payload = $request->getParsedBody();
         $expectedFields = ["answer","matchNo"];

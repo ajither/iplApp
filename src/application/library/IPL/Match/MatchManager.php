@@ -10,6 +10,7 @@
 namespace library\IPL\Match;
 
 use models\Match_Update;
+use models\MatchSchedule;
 
 class MatchManager
 {
@@ -21,6 +22,15 @@ class MatchManager
         $data = $match->getCurrentMatch($date);
         $response['success'] = 'true';
         $response['matchdetails'] = $data;
+        return json_encode($response,JSON_UNESCAPED_SLASHES);
+    }
+
+    public static function getMatchSchedule()
+    {
+        $scheduleModel = new MatchSchedule();
+        $teamSchedule = $scheduleModel->getTeamSchedule();
+        $response['success'] = 'true';
+        $response['matchschedule'] = $teamSchedule;
         return json_encode($response,JSON_UNESCAPED_SLASHES);
     }
 }
