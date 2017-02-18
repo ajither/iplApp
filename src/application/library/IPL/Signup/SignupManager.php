@@ -27,6 +27,7 @@ class SignupManager {
         $data['email'] = $payload['user_email'];
         $data['first_name'] = $payload['first_name'];
         $data['last_name'] = $payload['last_name'];
+        $data['fanteam'] = $payload['fan_team'];
         $data['password'] = HashManager::passwordHash($payload['password']);
         $date['created_date'] = date("Y-m-d H:i:s");
         if((isset($payload['refferal_code'])) && ($payload['refferal_code'] != '')){
