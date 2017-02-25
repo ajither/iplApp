@@ -50,8 +50,13 @@ class AnswerManager {
             $point = $matchPointModel->getPoint($value->user_id);
             $point = $point+2;
 
+            $matchPointModel = new Match_Point();
+            $totalcorrectGuess = $matchPointModel->getCurrectGuessNo($value->user_id);
+            $totalcorrectGuess = $totalcorrectGuess+1;
+
             $matchPoint['user_id'] = $value->user_id;
             $matchPoint['matchpoint'] = $point;
+            $matchPoint['nocurrectguess'] = $totalcorrectGuess;
             $matchPointModel = new Match_Point();
             $matchPointModel->updateMatchpoint($matchPoint);
         }

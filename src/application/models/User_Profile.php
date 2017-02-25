@@ -38,4 +38,11 @@ class User_Profile extends Eloquent
     public function addUserProfile($data) {
         return $this->tableObject->insertGetId($data);
     }
+
+    public function editUserProfile($data)
+    {
+        return $this->tableObject->
+        where('user_id', $data['user_id'])->
+        update($data);
+    }
 }

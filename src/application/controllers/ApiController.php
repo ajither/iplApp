@@ -139,6 +139,22 @@ class ApiController {
 
     /**
      * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function editProfile($request) {
+        $payload = $request->getParsedBody();
+        $expectedFields = ["user_id"];
+        $result = Validations::validateMandatoryFields($expectedFields, $payload);
+        if (!$result['status']) {
+            return json_encode($result['body'], JSON_NUMERIC_CHECK);
+        }
+
+        return UserManager::editUserProfile($payload);
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016
      * @brief      Error code
      */

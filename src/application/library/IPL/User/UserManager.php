@@ -21,34 +21,29 @@ use models\User_Refferal;
 
 class UserManager {
 
-    /**
-     * @author     Nikhil N R, <nikhil@salesx.io>
-     * @date       August 25, 2016
-     * @brief      Edits the user profile.
-     * @param      $request   request details.
-     * @return     Boolean
-     */
     public static function editUserProfile($payload) {
-        $userProfileModel = new User_Profile();
-        if (isset($payload['salesx_number'])) {
-            $payload['number_verified'] = 0;
-            try {
-                $phoneUtils = \libphonenumber\PhoneNumberUtil::getInstance();
-                $phoneNumber = $phoneUtils->parse("+" . $payload['salesx_number'], null);
-                $numberType = $phoneUtils->getNumberType($phoneNumber);
-                if ($numberType == 10) {
-                    $response['success'] = "false";
-                    $response['message'] = "Invalid phone number.";
-                    return json_encode($response, JSON_NUMERIC_CHECK);
-                }
-            } catch (\Exception $e) {
-                $response['success'] = "false";
-                $response['message'] = "Invalid phone number.";
-                return json_encode($response, JSON_NUMERIC_CHECK);
-            }
+        $data['id'] = $_SESSION['user_id'];
+        if(isset($payload['first_name'])){
+            $data['first_name'] = $payload['first_name'];
         }
-        $payload['id'] = $_SESSION["user_id"];
-        $userProfileModel->editUserProfile($payload);
+        if (isset($payload['last_name'])){
+            $data['last_name'] = $payload['last_name'];
+        }
+        if (isset($payload['last_name'])) {
+            $data['fanteam'] = $payload['fan_team'];
+        }
+        $user = new User();
+        $user->updateUser($data);
+
+        $userProfileData['user_id'] = $_SESSION['user_id'];
+        if (isset($payload['profile_picture'])) {
+            $userProfileData['profile_picture'] = $payload['profile_picture'];
+        }
+        if (isset($payload['phone_number'])){
+            $userProfileData['phone_number'] = $payload['phone_number'];
+        }
+        $userProfileModel = new User_Profile();
+        $userProfileModel->editUserProfile($userProfileData);
         $response['success'] = "true";
         $response['message'] = "User profile edited successfully.";
         return json_encode($response, JSON_NUMERIC_CHECK);

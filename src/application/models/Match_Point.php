@@ -42,4 +42,9 @@ class Match_Point extends Eloquent
     {
         return $this->tableObject->where("user_id",$matchPoint['user_id'])->update($matchPoint);
     }
+
+    public function getCurrectGuessNo($user_id)
+    {
+        return $this->tableObject->where("user_id",$user_id)->value('nocurrectguess');
+    }
 }

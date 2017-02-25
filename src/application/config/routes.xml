@@ -10,6 +10,7 @@
         <topprofile></topprofile>
         <matchwinnerupdate></matchwinnerupdate>
         <matchschedule></matchschedule>
+        <editprofile></editprofile>
     </post>
     <get>
     </get>
