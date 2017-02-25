@@ -113,7 +113,7 @@ class User extends Eloquent {
         join("user_profile","user.user_id","=","user_profile.user_id")->
             join("user_refferal","user.user_id","=","user_refferal.user_id")->
         join("user_match_point","user.user_id","=","user_match_point.user_id")->
-        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber", "user_refferal.refferal_point as refferalpoint","user_refferal.refferal_users_count as refferalusercount","user_match_point.matchpoint","user.fanteam"));
+        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber", "user_refferal.refferal_point as refferalpoint","user_refferal.refferal_users_count as refferalusercount","user_match_point.matchpoint","user.fanteam","user_match_point.nocurrectguess"));
         if (isset($result[0])) {
             return $result[0];
         } else {
@@ -133,7 +133,7 @@ class User extends Eloquent {
         join("user_profile","user.user_id","=","user_profile.user_id")->
         join("user_refferal","user.user_id","=","user_refferal.user_id")->
             join("user_match_point","user.user_id","=","user_match_point.user_id")->
-        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber", "user_refferal.refferal_point as refferalpoint","user_refferal.refferal_users_count as refferalusercount","user_match_point.matchpoint","user.fanteam"));
+        get(array("user.user_id as userid","user.email","user.first_name as firstname","user.last_name as lastname","user.username","user_profile.profile_picture as profilepicture","user_profile.refferal_code as refferalcode","user_profile.phone_number as phonenumber", "user_refferal.refferal_point as refferalpoint","user_refferal.refferal_users_count as refferalusercount","user_match_point.matchpoint","user.fanteam","user_match_point.nocurrectguess"));
         if (isset($result[0])) {
             return $result[0];
         } else {
