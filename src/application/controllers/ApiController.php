@@ -143,8 +143,8 @@ class ApiController {
      * @brief      getTopProfileDetails.
      */
     public function editProfile($request) {
-
-        return UserManager::editUserProfile();
+	$payload = $request->getParsedBody();
+        return UserManager::editUserProfile($payload);
     }
 
     /**
