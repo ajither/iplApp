@@ -98,7 +98,7 @@ class SignupManager {
         $user = new User();
         $userDetails = $user->fetchUserDetails($_SESSION['user_id']);
         if (LoginManager::validateLoginCredentials($userDetails->user_name, $payload['old_password'])) {
-            $data['id'] = $_SESSION['user_id'];
+            $data['user_id'] = $_SESSION['user_id'];
             $data['password'] = HashManager::passwordHash($payload['new_password']);
             $user->updateUser($data);
             $response['success'] = "true";

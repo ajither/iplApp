@@ -69,7 +69,7 @@ class User extends Eloquent {
      */
     public function updateUser($data) {
         return $this->tableObject->
-                        where('id', $data['id'])->
+                        where('user_id', $data['user_id'])->
                         update($data);
     }
 
