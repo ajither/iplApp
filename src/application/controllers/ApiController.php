@@ -143,14 +143,8 @@ class ApiController {
      * @brief      getTopProfileDetails.
      */
     public function editProfile($request) {
-        $payload = $request->getParsedBody();
-        $expectedFields = ["user_id"];
-        $result = Validations::validateMandatoryFields($expectedFields, $payload);
-        if (!$result['status']) {
-            return json_encode($result['body'], JSON_NUMERIC_CHECK);
-        }
 
-        return UserManager::editUserProfile($payload);
+        return UserManager::editUserProfile();
     }
 
     /**
