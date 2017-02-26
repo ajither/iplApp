@@ -22,7 +22,7 @@ use models\User_Refferal;
 class UserManager {
 
     public static function editUserProfile($payload) {
-        $data['id'] = $_SESSION['user_id'];
+        $data['user_id'] = $_SESSION['user_id'];
         if(isset($payload['first_name'])){
             $data['first_name'] = $payload['first_name'];
         }
