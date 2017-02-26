@@ -29,7 +29,7 @@ class UserManager {
         if (isset($payload['last_name'])){
             $data['last_name'] = $payload['last_name'];
         }
-        if (isset($payload['last_name'])) {
+        if (isset($payload['fan_team'])) {
             $data['fanteam'] = $payload['fan_team'];
         }
         $user = new User();
