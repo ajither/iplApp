@@ -36,8 +36,8 @@ class UserManager {
         $user->updateUser($data);
 
         $userProfileData['user_id'] = $_SESSION['user_id'];
-        if (isset($payload['profile_picture'])) {
-            $userProfileData['profile_picture'] = $payload['profile_picture'];
+        if (isset($payload['profile_photo'])) {
+            Utils::photoUpload($payload);
         }
         if (isset($payload['phone_number'])){
             $userProfileData['phone_number'] = $payload['phone_number'];

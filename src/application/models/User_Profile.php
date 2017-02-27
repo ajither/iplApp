@@ -45,4 +45,20 @@ class User_Profile extends Eloquent
         where('user_id', $data['user_id'])->
         update($data);
     }
+
+    public function userPhotoUrl($user_id)
+    {
+        $fetch = $this->tableObject->
+        where('user_id', $user_id)->
+        get(array('profile_picture'));
+        if (sizeof($fetch) > 0) {
+            $resultArray = json_decode(json_encode($fetch[0]), true);
+            foreach ($resultArray as $key => $values) {
+                if ($values == null) {
+                    $resultArray[$key] = "";
+                }
+            }
+            return $resultArray['profile_photo'];
+        }
+    }
 }

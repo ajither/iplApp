@@ -34,36 +34,13 @@ class Utils {
      * @return     Mime Type jpeg , png ...
      */
     public static function photoUpload($data) {
-        $contactProfileModel = new Contact();
-        $userProfileModel = new User_Profile();
         $data['user_id'] = $_SESSION["user_id"];
         $image = self::decodeBase64Image($data);
         $data['image'] = $image;
         $type = self::findMimeType($image);
         $fname = self::photoFileName($data);
         $data['filename'] = $fname . '.' . $type;
-        $response['success'] = "true";
-        $response['path'] = $data['filename'];
-        $response['message'] = "Photo Uploaded.";
-        $error['success'] = "false";
-        $error['message'] = "Photo Upload failed.";
-        if (isset($data['type']) && $data['type'] == "contact") {
-            $result = self::photoSave($data);
-            if ($result['success'] == 'true') {
-                $contactProfileModel->editContactPhoto($data);
-                return json_encode($response, JSON_NUMERIC_CHECK);
-            } else {
-                return json_encode($error, JSON_NUMERIC_CHECK);
-            }
-        } else if ($data['type'] == "user") {
-            $result = self::photoSave($data);
-            if ($result['success'] == 'true') {
-                $userProfileModel->editUserPhoto($data);
-                return json_encode($response, JSON_NUMERIC_CHECK);
-            } else {
-                return json_encode($error, JSON_NUMERIC_CHECK);
-            }
-        }
+        self::photoSave($data);
     }
 
     /**
@@ -74,7 +51,7 @@ class Utils {
      * @return     Mime Type jpeg , png ...
      */
     public static function decodeBase64Image($data) {
-        return base64_decode($data['photo']);
+        return base64_decode($data['profile_photo']);
     }
 
     /**
@@ -85,11 +62,7 @@ class Utils {
      * @return     filename
      */
     public static function photoFileName($data) {
-        if (isset($data['user_id']) && $data['type'] == "user") {
-            $id = $data['user_id'];
-        } elseif (isset($data['contact_id']) && $data['type'] == "contact") {
-            $id = $data['contact_id'];
-        }
+        $id = $data['user_id'];
         $date = date('Y-m-d h:i:s', time());
         $fname = preg_replace(
                 array('/-/', '/ /', '/:/'), array(''), $date
@@ -106,32 +79,21 @@ class Utils {
      */
     public static function photoSave($data) {
         $userProfileModel = new User_Profile();
-        $contactProfileModel = new Contact();
         $fname = $data['filename'];
         $image = $data['image'];
-        if (isset($data['user_id']) && $data['type'] == "user") {
-            $link = $userProfileModel->userPhotoUrl($data['user_id']);
-            $profilePicDirectory = getenv('APPLICATION.PATH') . "/application/files/userprofilepic";
-        } else if (isset($data['contact_id']) && $data['type'] == "contact") {
-            $link = $contactProfileModel->contactPhotoUrl($data);
-            $profilePicDirectory = getenv('APPLICATION.PATH') . "/application/files/contactprofilepic";
-        }
+        $link = $userProfileModel->userPhotoUrl($data['user_id']);
+        $profilePicDirectory = getenv('APPLICATION.PATH') . "/application/files/userprofilepic";
         if (file_exists($profilePicDirectory . '/' . $link)) {
             unlink($profilePicDirectory . '/' . $link);
         }
         if (!file_exists($profilePicDirectory)) {
             mkdir($profilePicDirectory);
         }
-        $save = file_put_contents($profilePicDirectory . "/" . $fname, $image);
-        if ($save !== FALSE) {
-            $response['success'] = "true";
-            $response['message'] = "User Profile Pic Saved.";
-            return $response;
-        } else {
-            $response['success'] = "false";
-            $response['message'] = "Somthing Went Wrong.";
-            return $response;
-        }
+        file_put_contents($profilePicDirectory . "/" . $fname, $image);
+        $userProfileData['user_id'] = $data['user_id'];
+        $userProfileData['profile_picture'] = $fname;
+        $userProfileModel = new User_Profile();
+        $userProfileModel->editUserProfile($userProfileData);
     }
 
     /**
