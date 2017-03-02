@@ -13,6 +13,7 @@ use \libphonenumber\PhoneNumberUtil as PhoneNumberUtil;
 use \library\IPL\Common\Utils as Utils;
 use \library\IPL\Email\EmailManager as EmailManager;
 use models\Answer;
+use models\Fcm_Token;
 use \models\User as User;
 use \models\User_Profile as User_Profile;
 use \library\IPL\Hash\HashManager as HashManager;
@@ -112,5 +113,19 @@ class UserManager {
         $response['topRefferal'] = $topRefferalWinner;
         return json_encode($response, JSON_NUMERIC_CHECK);
 
+    }
+
+    public static function fcmTokenUpdate($payload)
+    {
+        $user_id = $_SESSION['user_id'];
+        if(isset($payload['user_id'])){
+            $user_id =  $payload['user_id'];
+        }
+        $data['user_id'] = $user_id;
+        $data['token'] = $payload['fcm_token'];
+        $fcmModel = new Fcm_Token();
+        $fcmModel->updateFcmToken($data);
+        $response['success'] = "true";
+        return json_encode($response, JSON_NUMERIC_CHECK);
     }
 }

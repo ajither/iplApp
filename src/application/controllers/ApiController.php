@@ -149,6 +149,21 @@ class ApiController {
 
     /**
      * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function updateToken($request) {
+        $payload = $request->getParsedBody();
+        $expectedFields = ["fcm_token"];
+        $result = Validations::validateMandatoryFields($expectedFields, $payload);
+        if (!$result['status']) {
+            return json_encode($result['body'], JSON_NUMERIC_CHECK);
+        }
+        return UserManager::fcmTokenUpdate($payload);
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016
      * @brief      Error code
      */
