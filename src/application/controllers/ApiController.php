@@ -19,6 +19,7 @@ use \models\Google_Access_Tokens as Google_Access_Tokens;
 use \library\IPL\User\UserManager as UserManager;
 use \library\IPL\Match\MatchManager as MatchManager;
 use \library\IPL\Answer\AnswerManager as AnswerManager;
+use \library\IPL\Reward\RewardManager as RewardManager;
 
 class ApiController {
 
@@ -169,6 +170,15 @@ class ApiController {
      */
     public function usertotalpoint($request) {
         return UserManager::getTotalPoint();
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function redeemrequest($request) {
+        return RewardManager::updateRedeemRequest();
     }
 
     /**
