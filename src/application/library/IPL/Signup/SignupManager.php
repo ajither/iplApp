@@ -28,7 +28,9 @@ class SignupManager {
         $data['email'] = $payload['user_email'];
         $data['first_name'] = $payload['first_name'];
         $data['last_name'] = $payload['last_name'];
-        $data['fanteam'] = $payload['fan_team'];
+        if(isset($payload['fan_team'])){
+            $data['fanteam'] = $payload['fan_team'];
+        }
         $data['password'] = HashManager::passwordHash($payload['password']);
         $date['created_date'] = date("Y-m-d H:i:s");
         if((isset($payload['refferal_code'])) && ($payload['refferal_code'] != '')){
@@ -48,6 +50,11 @@ class SignupManager {
             $response['message'] = "User name already exists";
             return json_encode($response, JSON_NUMERIC_CHECK);
         }
+        $totalPoint['user_id'] = $user_id;
+        $totalPoint['totalpoint'] = 0;
+        $userTotalPointModel = new User_Total_Point();
+        $userTotalPointModel->updateTotalPoint($totalPoint);
+        
         if(isset($payload['refferal_code'])){
             self::addRefferalPoint($payload['refferal_code']);
         }
