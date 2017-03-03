@@ -27,4 +27,9 @@ class User_Total_Point extends Eloquent
     {
         return $this->tableObject->updateOrInsert(['user_id' => $data['user_id']], $data);
     }
+
+    public function getTotalPoint($user_id)
+    {
+        return $this->tableObject->where('user_id',$user_id)->value('totalpoint');
+    }
 }

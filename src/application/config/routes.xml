@@ -12,6 +12,8 @@
         <matchschedule></matchschedule>
         <editprofile></editprofile>
         <updatetoken></updatetoken>
+        <usertotalpoint></usertotalpoint>
+        <redeemrequest></redeemrequest>
     </post>
     <get>
     </get>

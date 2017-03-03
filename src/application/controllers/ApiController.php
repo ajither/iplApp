@@ -164,6 +164,15 @@ class ApiController {
 
     /**
      * @author     Ajith E R, <ajith@salesx.io>
+     * @date       December 22, 2016
+     * @brief      getTopProfileDetails.
+     */
+    public function usertotalpoint($request) {
+        return UserManager::getTotalPoint();
+    }
+
+    /**
+     * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016
      * @brief      Error code
      */

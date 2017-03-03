@@ -19,6 +19,7 @@ use \models\User_Profile as User_Profile;
 use \library\IPL\Hash\HashManager as HashManager;
 use \models\Match_Point as Match_Point;
 use models\User_Refferal;
+use models\User_Total_Point;
 
 class UserManager {
 
@@ -126,6 +127,15 @@ class UserManager {
         $fcmModel = new Fcm_Token();
         $fcmModel->updateFcmToken($data);
         $response['success'] = "true";
+        return json_encode($response, JSON_NUMERIC_CHECK);
+    }
+
+    public static function getTotalPoint()
+    {
+        $totalPointModel = new User_Total_Point();
+        $point = $totalPointModel->getTotalPoint($_SESSION['user_id']);
+        $response['success'] = "true";
+        $response['point'] = $point;
         return json_encode($response, JSON_NUMERIC_CHECK);
     }
 }
