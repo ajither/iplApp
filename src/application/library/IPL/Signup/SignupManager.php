@@ -14,6 +14,7 @@ use \models\Match_Point;
 use \models\User as User;
 use \models\User_Profile as User_Profile;
 use \models\User_Refferal;
+use models\User_Total_Point;
 
 class SignupManager {
 
@@ -151,6 +152,13 @@ class SignupManager {
         $refferalCode['refferal_code'] = $refferal_code;
         $user_refferal = new User_Refferal();
         $user_refferal->updateUserRefferal($refferalCode);
+
+        $matchPointModel = new Match_Point();
+        $matchPoint = $matchPointModel->getPoint($refferal['user_id']);
+        $totalPoint['totalpoint'] = $refferalCode['refferal_point']+$matchPoint;
+        $totalPoint['user_id'] = $refferal['user_id'];
+        $totalPointModel = new User_Total_Point();
+        $totalPointModel->updateTotalPoint($totalPoint);
     }
 
     /**

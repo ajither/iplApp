@@ -68,4 +68,9 @@ class User_Refferal extends Eloquent
         return $this->tableObject->orderBy('refferal_point','desc')->take(5)->get();
     }
 
+    public function getReferralPoint($user_id)
+    {
+        return $this->tableObject->where('user_id',$user_id)->value('refferal_point');
+    }
+
 }

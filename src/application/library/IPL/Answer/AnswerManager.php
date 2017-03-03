@@ -11,6 +11,8 @@ use models\Answer;
 use models\Match_Update;
 use \models\Match_Point as Match_Point;
 use \models\User as User;
+use models\User_Refferal;
+use models\User_Total_Point;
 
 class AnswerManager {
 
@@ -59,6 +61,14 @@ class AnswerManager {
             $matchPoint['nocurrectguess'] = $totalcorrectGuess;
             $matchPointModel = new Match_Point();
             $matchPointModel->updateMatchpoint($matchPoint);
+
+            $userReferralModel = new User_Refferal();
+            $referralPoint = $userReferralModel->getReferralPoint($value->user_id);
+            $totalPoint['totalpoint'] = $point+$referralPoint;
+            $totalPoint['user_id'] = $value->user_id;
+            $totalPointModel = new User_Total_Point();
+            $totalPointModel->updateTotalPoint($totalPoint);
+
         }
 
         $response['success'] = "true";
