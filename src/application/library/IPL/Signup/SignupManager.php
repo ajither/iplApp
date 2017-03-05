@@ -25,6 +25,9 @@ class SignupManager {
      * @brief      Sign up API
      */
     public static function signupAction($payload) {
+        $response['success'] = "true";
+        $response['message'] = "Server Under Maintenance ,Please Come Back Later";
+        return json_encode($response, JSON_NUMERIC_CHECK);
         $data['username'] = $payload['user_name'];
         $data['email'] = $payload['user_email'];
         $data['first_name'] = $payload['first_name'];
