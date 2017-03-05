@@ -14,6 +14,7 @@
         <updatetoken></updatetoken>
         <usertotalpoint></usertotalpoint>
         <redeemrequest></redeemrequest>
+        <mailsend></mailsend>
     </post>
     <get>
     </get>

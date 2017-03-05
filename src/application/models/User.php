@@ -82,7 +82,7 @@ class User extends Eloquent {
     public function fetchDetailsByUsername($userName)
     {
         $result = $this->tableObject->
-        where('email', $userName)->orWhere('username', $userName)->get();
+        where('email', $userName)->orWhere('username', $userName)->where('verify',1)->get();
         if (isset($result[0])) {
             return $result[0];
         } else {

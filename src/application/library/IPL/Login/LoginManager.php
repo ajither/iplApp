@@ -20,6 +20,14 @@ class LoginManager {
      * @brief      Login Actions
      */
     public static function loginAction($payload) {
+        $user = new User();
+        $userDetails = $user->fetchDetailsByUsername($payload['user_name']);
+        if($userDetails == null){
+            $response['success'] = "false";
+            $response['message'] = "Please Verify Your Mail Id";
+            return json_encode($response, JSON_NUMERIC_CHECK);
+        }
+
         if (self::validateLoginCredentials($payload['user_name'], $payload['user_password'])) {
             $encryptionKeyMapModel = new Encryption_Keymap();
             $encryptionKeyMap = $encryptionKeyMapModel->fetchEncryptionKeymapWithUid($_SESSION["user_id"]);

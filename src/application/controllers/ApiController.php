@@ -180,7 +180,6 @@ class ApiController {
     public function redeemrequest($request) {
         return RewardManager::updateRedeemRequest();
     }
-
     /**
      * @author     Ajith E R, <ajith@salesx.io>
      * @date       December 19, 2016

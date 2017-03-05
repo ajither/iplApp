@@ -15,6 +15,7 @@ use \models\User as User;
 use \models\User_Profile as User_Profile;
 use \models\User_Refferal;
 use models\User_Total_Point;
+use PHPMailer;
 
 class SignupManager {
 
@@ -42,6 +43,7 @@ class SignupManager {
                 return json_encode($response, JSON_NUMERIC_CHECK);
             }
         }
+        $data['verify'] = 0;
         try {
             $user = new User();
             $user_id = $user->addUser($data);
@@ -54,7 +56,7 @@ class SignupManager {
         $totalPoint['totalpoint'] = 0;
         $userTotalPointModel = new User_Total_Point();
         $userTotalPointModel->updateTotalPoint($totalPoint);
-        
+
         if(isset($payload['refferal_code'])){
             self::addRefferalPoint($payload['refferal_code']);
         }
@@ -80,17 +82,27 @@ class SignupManager {
         $user_profile = new User_Profile();
         $user_profile->addUserProfile($profileData);
 
-        $refferal['user_id'] = $user_id;
-        $refferal['refferal_code'] = $profileData['refferal_code'];
-        $refferal['refferal_point'] = 0;
-        $refferal['refferal_users_count'] = 0;
-        $user_refferal = new User_Refferal();
-        $user_refferal->addUserRefferal($refferal);
-
         $matchPoint['user_id'] = $user_id;
         $matchPoint['matchpoint'] = 0;
         $matchPointModel = new Match_Point();
         $matchPointModel->insertMatchpoint($matchPoint);
+
+        $mailVerification = self::sendVerificationMail($data['email']);
+        if($mailVerification !=null){
+            $verifyData['verify'] = 1;
+            $refferal['user_id'] = $user_id;
+            $refferal['refferal_code'] = $profileData['refferal_code'];
+            $refferal['refferal_point'] = 0;
+            $refferal['refferal_users_count'] = 0;
+            $user_refferal = new User_Refferal();
+            $user_refferal->addUserRefferal($refferal);
+        } else{
+            $verifyData['verify'] = 0;
+        }
+
+        $verifyData['user_id'] = $user_id;
+        $user = new User();
+        $user->updateUser(verifyData);
 
         $response['success'] = "true";
         $response['message'] = "Account Successfully Created";
@@ -191,6 +203,57 @@ class SignupManager {
             return json_encode($response, JSON_NUMERIC_CHECK);
         }
 
+    }
+
+    public static function sendVerificationMail($email)
+    {
+
+        $message = '
+				<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<body>
+
+    <div style="margin:0;padding:0;width:100%!important">
+        <div style="color:#222222;font-family:Helvetica;font-size:14px;line-height:1.4;padding:25px;width:550px">            
+            Congratulations, your account has been activated! 
+            <br
+            Thanks for signing up and joining the <a href="www.iplguess.net" target="_blank">Guess The Winner</a> community!<br>                                           
+            <br>
+            Cheers!<br>
+            Admin<br>            
+            <a href="www.iplguess.net" target="_blank">Guess The Winner</a>
+        </div>
+    </div>
+</body>
+</html>				
+				';
+        $mail = new PHPMailer();
+        $mail->IsSMTP();
+        $mail->Host = "smtp.gmail.com";
+        $mail->SMTPDebug = 0;
+        $mail->SMTPAuth = true;
+        $mail->SMTPSecure = 'ssl';
+        $mail->Port = 465;
+        $mail->Username = "iplguessnet@gmail.com";
+        $mail->Password = "1@iplguessnet";
+        $from = 'iplguessnet@gmail.com';
+        $fromName = 'Ipl Guess';
+        $mail->SetFrom($from,$fromName);
+        $mail->AddAddress($email);
+        $mail->WordWrap = 50;
+        $mail->Subject = "Your Account Activated";
+        $mail->MsgHTML($message);
+        $mail->IsHTML(true);
+        if(!$mail->Send())
+        {
+            return null;
+        }
+        else{
+            return true;
+        }
     }
 
 }
