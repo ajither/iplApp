@@ -199,7 +199,8 @@ class SignupManager {
     public static function sendVerificationMail($email,$userId)
     {
         $mailid = self::encrypt($email);
-        $userid = self::encrypt($userId);
+        $userid = strlen($mailid);
+        $mailid = $mailid.$userId;
         $link = 'iplguess.net/activate.php?userId='.$userid.'&email='.$mailid;
         $message = '
 				<!DOCTYPE html>
