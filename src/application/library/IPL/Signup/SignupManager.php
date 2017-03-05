@@ -86,7 +86,7 @@ class SignupManager {
         $matchPointModel = new Match_Point();
         $matchPointModel->insertMatchpoint($matchPoint);
 
-        self::sendVerificationMail($data['email']);
+        self::sendVerificationMail($data['email'],$user_id);
         $refferal['user_id'] = $user_id;
         $refferal['refferal_code'] = $profileData['refferal_code'];
         $refferal['refferal_point'] = 0;
@@ -198,10 +198,8 @@ class SignupManager {
 
     public static function sendVerificationMail($email,$userId)
     {
-        $mailid = self::encrypt($email);
-        $userid = strlen($mailid);
-        $mailid = $mailid.$userId;
-        $link = 'iplguess.net/activate.php?userId='.$userid.'&email='.$mailid;
+        $userid = self::encrypt($userId);
+        $link = 'iplguess.net/activate.php?email='.$userid;
         $message = '
 				<!DOCTYPE html>
 <html>
