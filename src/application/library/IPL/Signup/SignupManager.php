@@ -16,6 +16,7 @@ use \models\User_Profile as User_Profile;
 use \models\User_Refferal;
 use models\User_Total_Point;
 use PHPMailer;
+use \library\IPL\Common\Constants as Constants;
 
 class SignupManager {
 
@@ -25,9 +26,6 @@ class SignupManager {
      * @brief      Sign up API
      */
     public static function signupAction($payload) {
-        $response['success'] = "true";
-        $response['message'] = "Server Under Maintenance ,Please Come Back Later";
-        return json_encode($response, JSON_NUMERIC_CHECK);
         $data['username'] = $payload['user_name'];
         $data['email'] = $payload['user_email'];
         $data['first_name'] = $payload['first_name'];
@@ -40,7 +38,9 @@ class SignupManager {
         if((isset($payload['refferal_code'])) && ($payload['refferal_code'] != '')){
             $user_refferal = new User_Refferal();
             $refferalData = $user_refferal->checkRefferalCode($payload['refferal_code']);
-            if($refferalData == null){
+            if($refferalData != null){
+                $refferal['referralUserId'] = $refferalData->user_id;
+            }else{
                 $response['success'] = "false";
                 $response['message'] = "Refferal Code Not Found.";
                 return json_encode($response, JSON_NUMERIC_CHECK);
@@ -59,10 +59,6 @@ class SignupManager {
         $totalPoint['totalpoint'] = 0;
         $userTotalPointModel = new User_Total_Point();
         $userTotalPointModel->updateTotalPoint($totalPoint);
-
-        if(isset($payload['refferal_code'])){
-            self::addRefferalPoint($payload['refferal_code']);
-        }
         if(isset($payload['oauth_provider'])){
             $profileData['oauth_provider'] = $payload['oauth_provider'];
         }
@@ -90,22 +86,14 @@ class SignupManager {
         $matchPointModel = new Match_Point();
         $matchPointModel->insertMatchpoint($matchPoint);
 
-        $mailVerification = self::sendVerificationMail($data['email']);
-        if($mailVerification !=null){
-            $verifyData['verify'] = 1;
-            $refferal['user_id'] = $user_id;
-            $refferal['refferal_code'] = $profileData['refferal_code'];
-            $refferal['refferal_point'] = 0;
-            $refferal['refferal_users_count'] = 0;
-            $user_refferal = new User_Refferal();
-            $user_refferal->addUserRefferal($refferal);
-        } else{
-            $verifyData['verify'] = 0;
-        }
+        self::sendVerificationMail($data['email']);
+        $refferal['user_id'] = $user_id;
+        $refferal['refferal_code'] = $profileData['refferal_code'];
+        $refferal['refferal_point'] = 0;
+        $refferal['refferal_users_count'] = 0;
 
-        $verifyData['user_id'] = $user_id;
-        $user = new User();
-        $user->updateUser(verifyData);
+        $user_refferal = new User_Refferal();
+        $user_refferal->addUserRefferal($refferal);
 
         $response['success'] = "true";
         $response['message'] = "Account Successfully Created";
@@ -208,9 +196,11 @@ class SignupManager {
 
     }
 
-    public static function sendVerificationMail($email)
+    public static function sendVerificationMail($email,$userId)
     {
-
+        $mailid = self::encrypt($email);
+        $userid = self::encrypt($userId);
+        $link = 'iplguess.net/activate.php?userId='.$userid.'&email='.$mailid;
         $message = '
 				<!DOCTYPE html>
 <html>
@@ -220,10 +210,11 @@ class SignupManager {
 <body>
 
     <div style="margin:0;padding:0;width:100%!important">
-        <div style="color:#222222;font-family:Helvetica;font-size:14px;line-height:1.4;padding:25px;width:550px">            
-            Congratulations, your account has been activated! 
-            <br
+        <div style="color:#222222;font-family:Helvetica;font-size:14px;line-height:1.4;padding:25px;width:550px">                        
+            <br>
             Thanks for signing up and joining the <a href="www.iplguess.net" target="_blank">Guess The Winner</a> community!<br>                                           
+            <br>
+            <a href='.$link.' target="_blank" style="font-weight:bold;letter-spacing:normal;line-height:100%;text-align:center;text-decoration:none;color:#FFFFFF;mso-line-height-rule:exactly;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;display:block;"><button>Activate Your Account</button></a>
             <br>
             Cheers!<br>
             Admin<br>            
@@ -258,5 +249,16 @@ class SignupManager {
             return true;
         }
     }
+
+    private static function encrypt($email)
+    {
+        $encryptKey = Constants::$ENCRYPTION_KEY;
+        $salt = substr(md5(mt_rand(), true), 8);
+        $key = md5($encryptKey . $salt, true);
+        $iv = md5($key . $encryptKey . $salt, true);
+        $ct = mcrypt_encrypt(MCRYPT_RIJNDAEL_128, $key, $email, MCRYPT_MODE_CBC, $iv);
+        return base64_encode('Salted__' . $salt . $ct);
+    }
+
 
 }
