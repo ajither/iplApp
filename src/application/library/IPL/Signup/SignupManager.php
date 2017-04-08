@@ -237,7 +237,7 @@ class SignupManager {
         $mail->SetFrom($from,$fromName);
         $mail->AddAddress($email);
         $mail->WordWrap = 50;
-        $mail->Subject = "Your Account Activated";
+        $mail->Subject = "Guess The Winner Account Activation";
         $mail->MsgHTML($message);
         $mail->IsHTML(true);
         if(!$mail->Send())

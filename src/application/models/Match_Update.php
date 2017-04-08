@@ -36,4 +36,11 @@ class Match_Update extends Eloquent
             ->where('matchno',$matchNo)->get();
         return json_decode(json_encode($result[0]),TRUE);
     }
+
+    public function disableMatch($matchNo)
+    {
+        $data['active'] = 'no';
+        return $this->tableObject
+            ->where('matchno',$matchNo)->update($data);
+    }
 }

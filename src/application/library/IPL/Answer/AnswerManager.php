@@ -45,6 +45,10 @@ class AnswerManager {
     {
         $answ = strtolower($payload['answer']);
         $matchno = $payload['matchNo'];
+
+        $match = new Match_Update();
+        $match->disableMatch($payload['matchNo']);
+
         $answerModel = new Answer();
         $userid = $answerModel->fetchWinners($answ,$matchno);
         foreach ($userid as $key => $value){
