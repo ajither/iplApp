@@ -106,7 +106,7 @@ class AnswerManager {
 
         $response['success'] = "true";
         $response['message'] = "winner score updated";
-        return json_encode($response, JSON_NUMERIC_CHECK);
+        return json_encode($response);
 
     }
 }
