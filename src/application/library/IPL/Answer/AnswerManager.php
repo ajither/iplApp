@@ -8,6 +8,7 @@
 namespace library\IPL\Answer;
 
 use models\Answer;
+use models\Fcm_Token;
 use models\Match_Update;
 use \models\Match_Point as Match_Point;
 use \models\User as User;
@@ -72,6 +73,34 @@ class AnswerManager {
             $totalPoint['user_id'] = $value->user_id;
             $totalPointModel = new User_Total_Point();
             $totalPointModel->updateTotalPoint($totalPoint);
+
+            $fcmModel = new Fcm_Token();
+            $token = $fcmModel->getFcmToken($value->user_id);
+            $url = 'https://fcm.googleapis.com/fcm/send';
+            $fields = array(
+                'registration_ids' => $token,
+                'notification'=> array( "body" => "Your Guess Correct !", "title"=>"Guess The Winner","icon" => "myicon", "time_to_live" => 3
+                )
+            );
+
+            $headers = array(
+                'Authorization:key = AIzaSyCFC-7DmUamf2UrhEw99Q9gh4y3fhTYKVY',
+                'Content-Type: application/json'
+            );
+
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $url);
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+            $result = curl_exec($ch);
+            if ($result === FALSE) {
+                die('Curl failed: ' . curl_error($ch));
+            }
+            curl_close($ch);
 
         }
 

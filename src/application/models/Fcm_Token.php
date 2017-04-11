@@ -27,4 +27,8 @@ class Fcm_Token extends Eloquent
     {
         return $this->tableObject->updateOrInsert(['user_id' => $data['user_id']], $data);
     }
+    public function getFcmToken($userId)
+    {
+        return $this->tableObject->where('user_id',$userId)->value('token');
+    }
 }
